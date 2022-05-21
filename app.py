@@ -14,6 +14,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 from config.base import db
+import os
 
 #----------------------------------------------------------------------------#
 # Import Models.
@@ -24,14 +25,25 @@ from models.venue import Venue
 # App Config.
 #----------------------------------------------------------------------------#
 app = Flask(__name__)
-app.config.from_object('config')
+moment = Moment(app)
+
+# TODO: connect to a local postgresql database
+
+DATABASE_USERNAME=os.getenv('DATABASE_USERNAME')
+DATABASE_PASSWORD=os.getenv('DATABASE_PASSWORD')
+DATABASE_SERVER=os.getenv('DATABASE_SERVER')
+DATABASE_NAME=os.getenv('DATABASE_NAME')
+SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+
+app.config[
+  'SQLALCHEMY_DATABASE_URI'
+  ] = f'postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_SERVER}/{DATABASE_NAME}'
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
+
 db.init_app(app)
 
-moment = Moment(app)
-# TODO: connect to a local postgresql database
 migrate = Migrate(app, db)
-
-
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
