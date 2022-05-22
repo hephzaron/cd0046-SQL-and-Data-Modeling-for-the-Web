@@ -74,10 +74,13 @@ def index():
 #  Venues
 #  ----------------------------------------------------------------
 
-@app.route('/venues')
+@app.route('/venues', methods=['GET'])
 def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
+  
+  venues = Venue.query.all()
+  
   data=[{
     "city": "San Francisco",
     "state": "CA",

@@ -11,8 +11,11 @@ class Venue(db.Model):
     phone = db.Column(db.String(120), nullable=False)
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
+    website = db.Column(db.String(120))
+    seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
+    seeking_description = db.Column(db.String(120), nullable=False)
     
-    # 
+    
     artist = db.relationship('Artist', secondary='Show', backref=db.backref('venue', lazy=True))
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
