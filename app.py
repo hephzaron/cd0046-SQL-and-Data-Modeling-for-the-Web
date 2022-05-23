@@ -13,15 +13,14 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
-from config.base import db
+from decouple import config
 import os
 
 #----------------------------------------------------------------------------#
 # Import Models.
 #----------------------------------------------------------------------------#
-from models.artist import Artist
-from models.venue import Venue
-from models.show import Show
+
+from models.models import Venue, Artist, db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -30,22 +29,22 @@ moment = Moment(app)
 
 # TODO: connect to a local postgresql database
 
-DATABASE_USERNAME=os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD=os.getenv('DATABASE_PASSWORD')
-DATABASE_SERVER=os.getenv('DATABASE_SERVER')
-DATABASE_NAME=os.getenv('DATABASE_NAME')
-SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+DATABASE_USERNAME=config('DATABASE_USERNAME')
+DATABASE_PASSWORD=config('DATABASE_PASSWORD')
+DATABASE_SERVER=config('DATABASE_SERVER')
+DATABASE_NAME=config('DATABASE_NAME')
+SQLALCHEMY_TRACK_MODIFICATIONS = config('SQLALCHEMY_TRACK_MODIFICATIONS')
 
 app.config[
   'SQLALCHEMY_DATABASE_URI'
   ] = f'postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_SERVER}/{DATABASE_NAME}'
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
-
 db.init_app(app)
 
 migrate = Migrate(app, db)
 
+print('SQLALCHEMY_TRACK_MODIFICATIONS {} DATABASE_SERVER {}'
+      .format(SQLALCHEMY_TRACK_MODIFICATIONS, DATABASE_SERVER ))
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
 #----------------------------------------------------------------------------#
