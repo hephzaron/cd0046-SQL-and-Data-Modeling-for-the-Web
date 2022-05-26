@@ -78,7 +78,7 @@ class MusicGenre(db.Model):
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=True)
     
     genre = db.relationship('Genre', back_populates = 'venues')
-    venue = db.relationship('Artist', back_populates = 'genres')
+    venue = db.relationship('Venue', back_populates = 'genres')
     
     def __repr__(self):
         return f'<MusicGenre {self.id} {self.venue_id} {self.genre_id}>'

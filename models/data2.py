@@ -1,5 +1,4 @@
 ##Run this file to persist second set of data into the database after initial data that was sent
-
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from models import Artist, Genre, MusicGenre
@@ -21,5 +20,37 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
 db = SQLAlchemy(app)
 
-genre1 = Genre()
+genre1 = Genre(name='Classical')
+genre2 = Genre(name='R&B')
+genre3 = Genre(name='Hip-hop')
+genre4 = Genre(name='Rock n Roll')
+genre5 = Genre(name='Jazz')
+genre6 = Genre(name='Folk')
+genre7 = Genre(name='Reggae')
+genre8 = Genre(name='Swing')
 
+musicgenre1 = MusicGenre(venue_id=18, genre_id=1)
+musicgenre2 = MusicGenre(venue_id=18, genre_id=5)
+musicgenre3 = MusicGenre(venue_id=18, genre_id=6)
+musicgenre4 = MusicGenre(venue_id=18, genre_id=7)
+musicgenre5 = MusicGenre(venue_id=18, genre_id=8)
+musicgenre6 = MusicGenre(venue_id=19, genre_id=1)
+musicgenre7 = MusicGenre(venue_id=18, genre_id=2)
+musicgenre8 = MusicGenre(venue_id=18, genre_id=3)
+musicgenre9 = MusicGenre(venue_id=18, genre_id=1)
+musicgenre10 = MusicGenre(venue_id=18, genre_id=4)
+musicgenre11 = MusicGenre(venue_id=18, genre_id=5)
+musicgenre12 = MusicGenre(venue_id=18, genre_id=6)
+
+try:
+    db.session.add_all([genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8])
+    db.session.add_all([musicgenre1, musicgenre2, musicgenre3, musicgenre4, musicgenre5,
+                        musicgenre6, musicgenre7, musicgenre8, musicgenre9, musicgenre10,
+                        musicgenre11, musicgenre12])
+    db.session.commit()
+except:
+    print(sys.exc_info())
+    db.session.rollback()
+    print('failed')
+finally:
+    db.session.close()
