@@ -1,26 +1,29 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
-
-import json
-import dateutil.parser
-import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, render_template, jsonify, request, Response, flash, redirect, url_for
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-import logging
+from sqlalchemy import Date, alias, func, select, case
+from sqlalchemy.sql import label
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 from decouple import config
+from datetime import date
+from sqlalchemy.orm import joinedload, load_only
 import os
+import logging
+import json
+import dateutil.parser
+import babel
 
 #----------------------------------------------------------------------------#
 # Import Models.
 #----------------------------------------------------------------------------#
 
-from models.models import Venue, Artist, db
+from models.models import Venue, Artist, Show, db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -39,12 +42,12 @@ app.config[
   'SQLALCHEMY_DATABASE_URI'
   ] = f'postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_SERVER}/{DATABASE_NAME}'
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
+
 db.init_app(app)
 
 migrate = Migrate(app, db)
 
-print('SQLALCHEMY_TRACK_MODIFICATIONS {} DATABASE_SERVER {}'
-      .format(SQLALCHEMY_TRACK_MODIFICATIONS, DATABASE_SERVER ))
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
 #----------------------------------------------------------------------------#
@@ -64,7 +67,6 @@ app.jinja_env.filters['datetime'] = format_datetime
 #----------------------------------------------------------------------------#
 # Controllers.
 #----------------------------------------------------------------------------#
-
 @app.route('/')
 def index():
   return render_template('pages/home.html')
@@ -78,29 +80,29 @@ def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
   
-  venues = Venue.query.all()
+  # Query to fetch venues and number of upcoming shows
+  venues = db.session.query(
+    Venue.id,
+    Venue.name,
+    func.count(case([
+      (func.date(Show.start_time)>date.today(),1)
+      ])).label('num_upcoming_shows')
+    ).add_column(Venue.city).outerjoin(Show).group_by(Venue.id, Venue.name).all()
   
-  data=[{
-    "city": "San Francisco",
-    "state": "CA",
-    "venues": [{
-      "id": 1,
-      "name": "The Musical Hop",
-      "num_upcoming_shows": 0,
-    }, {
-      "id": 3,
-      "name": "Park Square Live Music & Coffee",
-      "num_upcoming_shows": 1,
-    }]
-  }, {
-    "city": "New York",
-    "state": "NY",
-    "venues": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }]
+  # Query to group Venues by city
+  venue_groups = db.session.query(
+    Venue.city,
+    Venue.state
+  ).group_by(Venue.city, Venue.state).all()
+  
+  data = []
+  for group in venue_groups:
+        obj={}
+        obj['city'] = group.city
+        obj['state'] = group.state
+        obj['venues'] = [venue for venue in venues if venue.city==group.city]
+        data.append(obj)
+  
   return render_template('pages/venues.html', areas=data);
 
 @app.route('/venues/search', methods=['POST'])
@@ -108,14 +110,23 @@ def search_venues():
   # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
   # seach for Hop should return "The Musical Hop".
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
-  response={
-    "count": 1,
-    "data": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
+  search_term = request.form.get('search_term', '')
+  
+  # Query to search by Venue names
+  found_venues = db.session.query(
+    Venue.id,
+    Venue.name,
+    func.count(case([(func.date(Show.start_time)>date.today(),1)])).label('num_upcoming_shows')
+    ).outerjoin(Show).filter(
+      Venue.name.like('%'+search_term+'%')
+      ).group_by(Venue.id, Venue.name).all()
+  
+  num_of_found_venues = len(found_venues)
+  response= { 
+    "count": num_of_found_venues,
+    "data": found_venues
   }
+  
   return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/venues/<int:venue_id>')
