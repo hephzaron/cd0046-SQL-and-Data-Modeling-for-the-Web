@@ -7,8 +7,8 @@ class Show(db.Model):
     __tablename__ = 'show'
     
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=True)
-    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=False)
     start_time = db.Column(db.DateTime(timezone=True), nullable=True)
     
     venue = db.relationship('Venue', back_populates = 'artists')
@@ -54,7 +54,32 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
     
     venues = db.relationship('Show', back_populates = 'artist')
+    genres = db.relationship('MusicGenre', back_populates = 'artist')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
         return f'<Artist {self.id} {self.name} {self.state}>'
+    
+class Genre(db.Model):
+    __tablename__ = 'genre'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+    
+    artists = db.relationship('MusicGenre', back_populates='genre')
+    
+    def __repr__(self):
+        return f'<Genre {self.id} {self.name}>'
+    
+class MusicGenre(db.Model):
+    __tablename__ = 'musicgenre'
+    
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=False)
+    
+    genre = db.relationship('Genre', back_populates = 'artists')
+    artist = db.relationship('Artist', back_populates = 'genres')
+    
+    def __repr__(self):
+        return f'<MusicGenre {self.id} {self.artist_id} {self.genre_id}>'
