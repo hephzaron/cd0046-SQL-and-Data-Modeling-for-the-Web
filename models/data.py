@@ -1,3 +1,5 @@
+## Run this file to send first set of data into the database
+
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from models import Venue, Artist, Show

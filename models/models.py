@@ -34,6 +34,7 @@ class Venue(db.Model):
     
     
     artists = db.relationship('Show', back_populates='venue')
+    genres = db.relationship('MusicGenre', back_populates = 'venue')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
@@ -49,12 +50,10 @@ class Artist(db.Model):
     city = db.Column(db.String(120), nullable=False)
     state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
-    genres = db.Column(db.String(120), nullable=False)
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
     
     venues = db.relationship('Show', back_populates = 'artist')
-    genres = db.relationship('MusicGenre', back_populates = 'artist')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
@@ -64,9 +63,9 @@ class Genre(db.Model):
     __tablename__ = 'genre'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(), nullable=False)
+    name = db.Column(db.String(), nullable=True)
     
-    artists = db.relationship('MusicGenre', back_populates='genre')
+    venues = db.relationship('MusicGenre', back_populates='genre')
     
     def __repr__(self):
         return f'<Genre {self.id} {self.name}>'
@@ -75,11 +74,11 @@ class MusicGenre(db.Model):
     __tablename__ = 'musicgenre'
     
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=True)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=True)
     
-    genre = db.relationship('Genre', back_populates = 'artists')
-    artist = db.relationship('Artist', back_populates = 'genres')
+    genre = db.relationship('Genre', back_populates = 'venues')
+    venue = db.relationship('Artist', back_populates = 'genres')
     
     def __repr__(self):
-        return f'<MusicGenre {self.id} {self.artist_id} {self.genre_id}>'
+        return f'<MusicGenre {self.id} {self.venue_id} {self.genre_id}>'
