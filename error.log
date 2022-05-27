@@ -516,3 +516,4 @@ jinja2.exceptions.TemplateNotFound: errors/404.html
 2022-05-27 01:32:30,774 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:437]
 2022-05-27 02:48:20,616 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:449]
 2022-05-27 03:27:24,585 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:466]
+2022-05-27 18:40:20,130 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:477]

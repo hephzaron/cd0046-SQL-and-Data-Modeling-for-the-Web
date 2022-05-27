@@ -192,7 +192,8 @@ def create_venue_form():
 def create_venue_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
-
+  venue = {**request.form}
+  db.session.add(venue)
   # on successful db insert, flash success
   flash('Venue ' + request.form['name'] + ' was successfully listed!')
   # TODO: on unsuccessful db insert, flash an error instead.
@@ -252,7 +253,7 @@ def show_artist(artist_id):
     "city": "San Francisco",
     "state": "CA",
     "phone": "326-123-5000",
-    "website": "https://www.gunsnpetalsband.com",
+    "website_link": "https://www.gunsnpetalsband.com",
     "facebook_link": "https://www.facebook.com/GunsNPetals",
     "seeking_venue": True,
     "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
@@ -331,7 +332,7 @@ def edit_artist(artist_id):
     "city": "San Francisco",
     "state": "CA",
     "phone": "326-123-5000",
-    "website": "https://www.gunsnpetalsband.com",
+    "website_link": "https://www.gunsnpetalsband.com",
     "facebook_link": "https://www.facebook.com/GunsNPetals",
     "seeking_venue": True,
     "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
@@ -358,7 +359,7 @@ def edit_venue(venue_id):
     "city": "San Francisco",
     "state": "CA",
     "phone": "123-123-1234",
-    "website": "https://www.themusicalhop.com",
+    "website_link": "https://www.themusicalhop.com",
     "facebook_link": "https://www.facebook.com/TheMusicalHop",
     "seeking_talent": True,
     "seeking_description": "We are on the lookout for a local artist to play every two weeks. Please call us.",
