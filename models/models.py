@@ -63,7 +63,7 @@ class Genre(db.Model):
     __tablename__ = 'genre'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(), nullable=True)
+    name = db.Column(db.String(), nullable=False)
     
     venues = db.relationship('MusicGenre', back_populates='genre')
     
@@ -74,8 +74,8 @@ class MusicGenre(db.Model):
     __tablename__ = 'musicgenre'
     
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=True)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=True)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=False)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=False)
     
     genre = db.relationship('Genre', back_populates = 'venues')
     venue = db.relationship('Venue', back_populates = 'genres')

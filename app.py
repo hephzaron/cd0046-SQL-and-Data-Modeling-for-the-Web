@@ -23,7 +23,7 @@ import babel
 # Import Models.
 #----------------------------------------------------------------------------#
 
-from models.models import Venue, Artist, Show, db
+from models.models import Venue, Artist, Show, Genre, MusicGenre, db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -87,7 +87,7 @@ def venues():
     func.count(case([
       (func.date(Show.start_time)>date.today(),1)
       ])).label('num_upcoming_shows')
-    ).add_column(Venue.city).outerjoin(Show).group_by(Venue.id, Venue.name).all()
+    ).add_columns(Venue.city).outerjoin(Show).group_by(Venue.id, Venue.name).all()
   
   # Query to group Venues by city
   venue_groups = db.session.query(
@@ -127,13 +127,16 @@ def search_venues():
     "data": found_venues
   }
   
-  return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
+  return render_template(
+    'pages/search_venues.html',results=response, search_term=request.form.get('search_term', '')
+    )
 
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
-  venue = db.session.query(Venue).options(joinedload(Venue.artists)).all()
+  venue = db.session.query(Venue).filter(Venue.id==venue_id).options(
+    joinedload(Venue.genres).options(load_only(Genre.name))).all()
   print('venue', venue)
   data1={
     "id": 1,
