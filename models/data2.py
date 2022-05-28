@@ -20,14 +20,25 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
 db = SQLAlchemy(app)
 
-genre1 = Genre(name='Classical')
-genre2 = Genre(name='R&B')
-genre3 = Genre(name='Hip-hop')
-genre4 = Genre(name='Rock n Roll')
-genre5 = Genre(name='Jazz')
-genre6 = Genre(name='Folk')
-genre7 = Genre(name='Reggae')
-genre8 = Genre(name='Swing')
+genre1 = Genre(name='Alternative'),
+genre2 = Genre(name='Blues'),
+genre3 = Genre(name='Classical'),
+genre4 = Genre(name='Country'),
+genre5 = Genre(name='Electronic'),
+genre6 = Genre(name='Folk'),
+genre7 = Genre(name='Funk'),
+genre8 = Genre(name='Hip-Hop'),
+genre9 = Genre(name='Heavy Metal'),
+genre10 = Genre(name='Instrumental'),
+genre11 = Genre(name='Jazz'),
+genre12 = Genre(name='Musical Theatre'),
+genre13 = Genre(name='Pop'),
+genre14 = Genre(name='Punk'),
+genre15 = Genre(name='R&B'),
+genre16 = Genre(name='Reggae'),
+genre17 = Genre(name='Rock n Roll'),
+genre18 = Genre(name='Soul'),
+genre19 = Genre(name='Other'),
 
 musicgenre1 = MusicGenre(venue_id=18, genre_id=1)
 musicgenre2 = MusicGenre(venue_id=18, genre_id=5)
@@ -43,7 +54,8 @@ musicgenre11 = MusicGenre(venue_id=20, genre_id=5)
 musicgenre12 = MusicGenre(venue_id=20, genre_id=6)
 
 try:
-    db.session.add_all([genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8])
+    db.session.add_all([ genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8,genre9, genre10, 
+                        genre11, genre12, genre13, genre14, genre15, genre16, genre17, genre18, genre19])
     db.session.add_all([musicgenre1, musicgenre2, musicgenre3, musicgenre4, musicgenre5,
                         musicgenre6, musicgenre7, musicgenre8, musicgenre9, musicgenre10,
                         musicgenre11, musicgenre12])

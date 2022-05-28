@@ -13,7 +13,7 @@ from flask_migrate import Migrate
 from decouple import config
 from datetime import date
 from sqlalchemy.orm import joinedload, load_only
-import os
+import sys
 import logging
 import json
 import dateutil.parser
@@ -23,7 +23,7 @@ import babel
 # Import Models.
 #----------------------------------------------------------------------------#
 
-from models.models import Venue, Artist, Show, Genre, MusicGenre, db
+from models.models import Venue, Artist, Show, db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -193,10 +193,18 @@ def create_venue_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
   venue = {**request.form}
-  db.session.add(venue)
+  try:
+    db.session.add(venue)
+    db.session.commit()
+    flash('Venue ' +request.form['name']  + ' was successfully listed!')
+  except:
+    db.session.rollback()
+    # TODO: on unsuccessful db insert, flash an error instead.
+    flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.', 'error')
+    print(sys.exc_info())
+  finally:
+    db.session.close()
   # on successful db insert, flash success
-  flash('Venue ' + request.form['name'] + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
   return render_template('pages/home.html')
