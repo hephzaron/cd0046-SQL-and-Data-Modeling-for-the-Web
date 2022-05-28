@@ -139,13 +139,7 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   # Get the queries of all required columns
-  all_columns = select(Venue).where(Venue.id==venue_id).subquery()
-  
-  # Get the genre list of requested venue id
-  genre_list = db.session.query(
-    MusicGenre.venue_id, Genre.name
-    ).join(MusicGenre).filter(MusicGenre.venue_id==venue_id).all()
-  
+  all_columns = select(Venue).where(Venue.id==venue_id).subquery() 
   venue = db.session.query(all_columns).first()
   
   # Convert into a readable dict format
@@ -171,8 +165,7 @@ def show_venue(venue_id):
     
   past_shows_count = len(past_shows)
   upcoming_shows_count = len(upcoming_shows)
-    
-  venue['genres'] = list(genre_list)
+  
   venue['past_shows'] = list(past_shows)
   venue['upcoming_shows'] = list(upcoming_shows)
   venue['past_shows_count'] = past_shows_count

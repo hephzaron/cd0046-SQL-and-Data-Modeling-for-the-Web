@@ -23,6 +23,7 @@ db = SQLAlchemy(app)
 
 venue1=Venue(
     name="The Musical Hop",
+    genres=["Jazz", "Reggae", "Swing", "Classical", "Folk"],
     address="1015 Folsom Street",
     city="San Francisco",
     state="CA",
@@ -36,6 +37,7 @@ venue1=Venue(
 
 venue2= Venue(
     name="The Dueling Pianos Bar",
+    genres=["Classical", "R&B", "Hip-Hop"],
     address="335 Delancey Street",
     city="New York",
     state="NY",
@@ -48,6 +50,7 @@ venue2= Venue(
 
 venue3=Venue(
     name="Park Square Live Music & Coffee",
+    genres=["Rock n Roll", "Jazz", "Classical", "Folk"],
     address="34 Whiskey Moore Ave",
     city="San Francisco",
     state="CA",
@@ -63,8 +66,12 @@ artist1 = Artist(
     city = "San Francisco",
     state = "CA",
     phone = 0000000000,
-    genres = "Jazz",
     image_link = "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+    genres = ["Rock n Roll"],
+    facebook_link = "https://www.facebook.com/GunsNPetals",
+    website_link = "https://www.gunsnpetalsband.com",
+    seeking_venue = True,
+    seeking_description = "Looking for shows to perform at in the San Francisco Bay Area!"
 )
 
 artist2 = Artist(
@@ -72,8 +79,10 @@ artist2 = Artist(
     city = "San Francisco",
     state = "CA",
     phone = 0000000000,
-    genres = "Rock n Roll",
-    image_link = "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+    image_link = "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+    genres = ["Jazz"],
+    facebook_link = "https://www.facebook.com/mattquevedo923251523",
+    seeking_venue = False
 )
 
 artist3 = Artist(
@@ -82,7 +91,8 @@ artist3 = Artist(
     state = "CA",
     phone = 0000000000,
     genres = "Rock n Roll",
-    image_link = "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80"
+    image_link = "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+    genres = ["Jazz", "Classical"]
 )
 
 show1 = Show(start_time="2019-05-21T21:30:00.000Z")
