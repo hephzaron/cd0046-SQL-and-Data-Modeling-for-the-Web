@@ -231,7 +231,7 @@ class ArtistForm(Form):
         'website_link'
      )
 
-    seeking_venue = BooleanField( 'seeking_venue' )
+    seeking_venue = BooleanField( 'seeking_venue', render_kw={'value': True} )
 
     seeking_description = StringField(
             'seeking_description'

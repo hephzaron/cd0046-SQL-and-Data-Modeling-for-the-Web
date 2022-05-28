@@ -90,7 +90,6 @@ artist3 = Artist(
     city = "San Francisco",
     state = "CA",
     phone = 0000000000,
-    genres = "Rock n Roll",
     image_link = "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
     genres = ["Jazz", "Classical"]
 )
@@ -108,6 +107,8 @@ try:
     show4.artist = artist3
     show5.artist = artist3
     venue1.artists.append(show1)
+    venue2.artists.append(show4)
+    venue2.artists.append(show5)
     venue3.artists.append(show2)
     venue3.artists.append(show3)
     venue3.artists.append(show3)
