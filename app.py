@@ -326,8 +326,6 @@ def edit_artist_submission(artist_id):
   # Remove csrf_token from data to be persisted to db
   formdata.pop('csrf_token')
   
-  print('formdata', {**formdata})
-  
   db.session.query(Artist).filter(Artist.id==artist_id).update({**formdata})
     
   artist = None
@@ -364,6 +362,30 @@ def edit_venue(venue_id):
 def edit_venue_submission(venue_id):
   # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
+  form = VenueForm(formdata=MultiDict(request.form))
+  formdata = form.data
+  # Remove csrf_token from data to be persisted to db
+  formdata.pop('csrf_token')
+  
+  db.session.query(Venue).filter(Venue.id==venue_id).update({**formdata})
+    
+  venue = None
+  try:
+    db.session.commit()
+    # Query edited venue information
+    venue = db.session.query(
+      Venue.id,
+      Venue.name
+      ).filter(Venue.id==venue_id).first()
+    
+    flash('Venue ' +venue['name']  + ' was edited succssfully')
+  except SQLAlchemyError as e:
+    db.session.rollback()    
+    flash('An error occurred. Venue ' + venue['name'] + ' could not be updated.', 'error')
+  finally:
+    db.session.close()
+  
+  
   return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
