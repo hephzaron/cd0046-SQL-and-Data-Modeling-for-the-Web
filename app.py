@@ -1,22 +1,17 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
-from flask import Flask, render_template, jsonify, request, Response, flash, redirect, url_for, abort
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Date, alias, func, select, case
-from sqlalchemy.sql import label
+from sqlalchemy import func, select, case
 from logging import Formatter, FileHandler
 from werkzeug.datastructures import MultiDict
-from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 from decouple import config
 from datetime import date
 from sqlalchemy.exc import SQLAlchemyError
-import sys
 import logging
-import json
 import dateutil.parser
 import babel
 
