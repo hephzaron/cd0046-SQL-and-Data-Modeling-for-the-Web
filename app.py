@@ -306,29 +306,46 @@ def show_artist(artist_id):
 #  Update
 #  ----------------------------------------------------------------
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
-def edit_artist(artist_id):
-  form = ArtistForm()
-  artist={
-    "id": 4,
-    "name": "Guns N Petals",
-    "genres": ["Rock n Roll"],
-    "city": "San Francisco",
-    "state": "CA",
-    "phone": "326-123-5000",
-    "website_link": "https://www.gunsnpetalsband.com",
-    "facebook_link": "https://www.facebook.com/GunsNPetals",
-    "seeking_venue": True,
-    "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
-    "image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80"
-  }
+def edit_artist(artist_id):  
   # TODO: populate form with fields from artist with ID <artist_id>
+  # Get all columns from artist
+  all_columns = select(Artist).where(Artist.id==artist_id).subquery()
+  artist = db.session.query(all_columns).first()
+  
+  # Populate form fileds from artist with ID <artis_id>
+  form = ArtistForm(obj=artist)
+ 
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
   # TODO: take values from the form submitted, and update existing
   # artist record with ID <artist_id> using the new attributes
-
+  form = ArtistForm(formdata=MultiDict(request.form))
+  formdata = form.data
+  # Remove csrf_token from data to be persisted to db
+  formdata.pop('csrf_token')
+  
+  print('formdata', {**formdata})
+  
+  db.session.query(Artist).filter(Artist.id==artist_id).update({**formdata})
+    
+  artist = None
+  try:
+    db.session.commit()
+    # Query edited artist information
+    artist = db.session.query(
+      Artist.id,
+      Artist.name
+      ).filter(Artist.id==artist_id).first()
+    
+    flash('Artist ' +artist['name']  + ' was edited succssfully')
+  except SQLAlchemyError as e:
+    db.session.rollback()    
+    flash('An error occurred. Artist ' + artist['name'] + ' could not be updated.', 'error')
+  finally:
+    db.session.close()
+    
   return redirect(url_for('show_artist', artist_id=artist_id))
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
