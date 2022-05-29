@@ -212,13 +212,13 @@ def delete_venue(venue_id):
   # TODO: Complete this endpoint for taking a venue_id, and using
   # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
   
-  error = False
+  error = e
   try:
     venue = Venue.query.get(venue_id)
     db.session.delete(venue)
     db.session.commit()
   except SQLAlchemyError as e:
-    error = True
+    error = e
     db.session.rollback()
     flash('An error occurred venue could not be deleted')
   finally:
@@ -226,7 +226,8 @@ def delete_venue(venue_id):
   if not error:
         return render_template('pages/home.html')
   else:
-        return render_template('errors/505.html')
+        not_found_error(e)
+      
 
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
@@ -341,6 +342,7 @@ def edit_artist_submission(artist_id):
   except SQLAlchemyError as e:
     db.session.rollback()    
     flash('An error occurred. Artist ' + artist['name'] + ' could not be updated.', 'error')
+    server_error(e)
   finally:
     db.session.close()
     
@@ -382,6 +384,7 @@ def edit_venue_submission(venue_id):
   except SQLAlchemyError as e:
     db.session.rollback()    
     flash('An error occurred. Venue ' + venue['name'] + ' could not be updated.', 'error')
+    server_error(e)
   finally:
     db.session.close()
   
@@ -415,6 +418,7 @@ def create_artist_submission():
     db.session.rollback()
     # TODO: on unsuccessful db insert, flash an error instead.
     flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.', 'error')
+    server_error(e)
   finally:
     db.session.close()
   # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.')
