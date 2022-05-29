@@ -1,1 +1,530 @@
 
+2022-05-21 19:35:59,015 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:490]
+2022-05-21 19:38:06,454 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 64, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:38:07,921 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 64, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:38:10,760 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 475, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:38:11,412 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 475, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:44:04,784 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:490]
+2022-05-21 19:44:25,134 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 64, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:44:26,827 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 475, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:46:55,102 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:501]
+2022-05-21 19:49:57,733 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:490]
+2022-05-21 19:50:10,461 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 64, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:50:11,841 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 475, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:51:44,744 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:490]
+2022-05-21 19:51:48,443 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 64, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:51:49,940 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 475, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:52:58,479 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:492]
+2022-05-21 19:53:12,936 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 66, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 19:53:14,186 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 477, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 19:56:09,390 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:493]
+2022-05-21 19:58:25,368 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:493]
+2022-05-21 20:02:23,654 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:493]
+2022-05-21 20:02:27,553 ERROR: Exception on / [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 67, in index
+    return render_template('pages/home.html')
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: pages/home.html
+2022-05-21 20:02:32,169 ERROR: Exception on /favicon.ico [GET] [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py:1455]
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1481, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\ctx.py", line 397, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\werkzeug\routing.py", line 2028, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1384, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\app.py", line 1324, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py", line 478, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 1068, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 997, in get_template
+    return self._load_template(name, globals)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\environment.py", line 958, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\jinja2\loaders.py", line 125, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 59, in get_source
+    return self._get_source_fast(environment, template)
+  File "C:\Users\Hephzaron\Documents\ALX-T\Fyyur\env\lib\site-packages\flask\templating.py", line 95, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: errors/404.html
+2022-05-21 20:04:09,599 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:493]
+2022-05-21 20:22:17,408 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:494]
+2022-05-21 20:39:28,825 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:484]
+2022-05-21 20:40:42,220 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:484]
+2022-05-21 22:10:46,117 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:496]
+2022-05-22 20:14:42,405 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:497]
+2022-05-23 22:12:01,666 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:498]
+2022-05-23 23:54:10,022 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:500]
+2022-05-24 18:28:42,798 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:485]
+2022-05-24 18:56:55,539 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:485]
+2022-05-25 03:05:04,132 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:492]
+2022-05-25 04:27:49,486 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:499]
+2022-05-25 18:32:36,122 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:510]
+2022-05-25 18:58:52,210 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:511]
+2022-05-25 21:45:25,612 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:512]
+2022-05-26 05:25:54,665 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:512]
+2022-05-26 18:35:09,042 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:500]
+2022-05-26 19:01:32,844 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:502]
+2022-05-26 20:10:07,581 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:500]
+2022-05-26 21:11:03,701 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:505]
+2022-05-27 00:22:48,859 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:512]
+2022-05-27 01:26:03,411 INFO: errors [in c:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:514]
+2022-05-27 01:32:30,774 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:437]
+2022-05-27 02:48:20,616 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:449]
+2022-05-27 03:27:24,585 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:466]
+2022-05-27 18:40:20,130 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:477]
+2022-05-28 04:18:48,039 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:479]
+2022-05-28 05:32:42,914 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:483]
+2022-05-28 05:54:24,694 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:491]
+2022-05-28 07:55:32,854 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:484]
+2022-05-28 08:30:03,463 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:503]
+2022-05-28 08:45:11,567 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:503]
+2022-05-28 20:43:57,213 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:462]
+2022-05-29 03:08:24,137 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:470]
+2022-05-29 05:24:24,658 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:478]
+2022-05-29 05:29:08,688 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:470]
+2022-05-29 19:38:58,585 INFO: errors [in C:\Users\Hephzaron\Documents\ALX-T\Fyyur\app.py:494]
