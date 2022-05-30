@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------------#
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_moment import Moment
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, select, case
 from logging import Formatter, FileHandler
 from werkzeug.datastructures import MultiDict
@@ -182,25 +183,30 @@ def create_venue_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
   form = VenueForm(formdata=MultiDict(request.form))
-  formdata = form.data
-  # Remove csrf_token from data to be persisted to db
-  formdata.pop('csrf_token')
- 
-  venue = Venue(**formdata)
-  try:
-    db.session.add(venue)
-    db.session.commit()
-    flash('Venue ' +request.form['name']  + ' was successfully listed!')
-  except:
-    db.session.rollback()
-    # TODO: on unsuccessful db insert, flash an error instead.
-    flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.', 'error')
-  finally:
-    db.session.close()
-  # on successful db insert, flash success
-  # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-  return render_template('pages/home.html')
+  
+  # Validate form entries before submission
+  if form.validate():
+        formdata = form.data
+        # Remove csrf_token from data to be persisted to db
+        formdata.pop('csrf_token')
+        venue = Venue(**formdata)
+        
+        try:
+          db.session.add(venue)
+          db.session.commit()
+          flash('Venue ' +request.form['name']  + ' was successfully listed!','success')
+        except:
+          db.session.rollback()
+          # TODO: on unsuccessful db insert, flash an error instead.
+          flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.', 'error')
+        finally:
+          db.session.close()
+          # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
+          # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+        return render_template('pages/home.html')
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/new_venue.html', form=form)
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
@@ -215,7 +221,7 @@ def delete_venue(venue_id):
   except SQLAlchemyError as e:
     error = e
     db.session.rollback()
-    flash('An error occurred venue could not be deleted')
+    flash('An error occurred venue could not be deleted','error')
   finally:
     db.session.close()
   if not error:
@@ -321,27 +327,31 @@ def edit_artist_submission(artist_id):
   formdata = form.data
   # Remove csrf_token from data to be persisted to db
   formdata.pop('csrf_token')
+    
+  artist = db.session.query(Artist).filter(Artist.id==artist_id).first()
   
-  db.session.query(Artist).filter(Artist.id==artist_id).update({**formdata})
-    
-  artist = None
-  try:
-    db.session.commit()
-    # Query edited artist information
-    artist = db.session.query(
-      Artist.id,
-      Artist.name
-      ).filter(Artist.id==artist_id).first()
-    
-    flash('Artist ' +artist['name']  + ' was edited succssfully')
-  except SQLAlchemyError as e:
-    db.session.rollback()    
-    flash('An error occurred. Artist ' + artist['name'] + ' could not be updated.', 'error')
-    server_error(e)
-  finally:
-    db.session.close()
-    
-  return redirect(url_for('show_artist', artist_id=artist_id))
+  # Validate artist entry form before submission
+  if form.validate():
+        try:
+          db.session.query(Artist).filter(Artist.id==artist_id).update({**formdata})
+          db.session.commit()
+          # Query edited artist information
+          artist = db.session.query(
+            Artist.id,
+            Artist.name
+            ).filter(Artist.id==artist_id).first()
+          
+          flash('Artist ' +artist['name']  + ' was edited succssfully','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()    
+          flash('An error occurred. Artist ' + artist['name'] + ' could not be updated.', 'error')
+          server_error(e)
+        finally:
+          db.session.close()    
+        return redirect(url_for('show_artist', artist_id=artist_id))
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/edit_artist.html', form=form, artist=artist)       
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
@@ -355,6 +365,7 @@ def edit_venue(venue_id):
   form = VenueForm(obj=venue)
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
+
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
   # TODO: take values from the form submitted, and update existing
@@ -367,24 +378,26 @@ def edit_venue_submission(venue_id):
   db.session.query(Venue).filter(Venue.id==venue_id).update({**formdata})
     
   venue = None
-  try:
-    db.session.commit()
-    # Query edited venue information
-    venue = db.session.query(
-      Venue.id,
-      Venue.name
-      ).filter(Venue.id==venue_id).first()
-    
-    flash('Venue ' +venue['name']  + ' was edited succssfully')
-  except SQLAlchemyError as e:
-    db.session.rollback()    
-    flash('An error occurred. Venue ' + venue['name'] + ' could not be updated.', 'error')
-    server_error(e)
-  finally:
-    db.session.close()
   
-  
-  return redirect(url_for('show_venue', venue_id=venue_id))
+  if form.validate():
+        try:
+          db.session.commit()
+          # Query edited venue information
+          venue = db.session.query(
+            Venue.id,
+            Venue.name
+            ).filter(Venue.id==venue_id).first()
+          flash('Venue ' +venue['name']  + ' was edited succssfully','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          flash('An error occurred. Venue ' + venue['name'] + ' could not be updated.', 'error')
+          server_error(e)
+        finally:
+          db.session.close()
+        return redirect(url_for('show_venue', venue_id=venue_id))
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 #  Create Artist
 #  ----------------------------------------------------------------
@@ -400,24 +413,28 @@ def create_artist_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
   form = ArtistForm(formdata=MultiDict(request.form))
-  formdata = form.data
-  # Remove csrf_token from data to be persisted to db
-  formdata.pop('csrf_token')
- 
-  artist = Artist(**formdata)
-  try:
-    db.session.add(artist)
-    db.session.commit()
-    flash('Artist ' +request.form['name']  + ' was successfully listed!')
-  except SQLAlchemyError as e:
-    db.session.rollback()
-    # TODO: on unsuccessful db insert, flash an error instead.
-    flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.', 'error')
-    server_error(e)
-  finally:
-    db.session.close()
-  # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.')
-  return render_template('pages/home.html')
+  
+  if form.validate():
+        formdata = form.data
+        # Remove csrf_token from data to be persisted to db
+        formdata.pop('csrf_token')
+        artist = Artist(**formdata)
+        
+        try:
+          db.session.add(artist)
+          db.session.commit()
+          flash('Artist ' +request.form['name']  + ' was successfully listed!','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          # TODO: on unsuccessful db insert, flash an error instead.
+          flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.', 'error')
+          server_error(e)
+        finally:
+          db.session.close()
+        return render_template('pages/home.html')
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/new_artist.html', form=form)
 
 
 #  Shows
@@ -454,20 +471,26 @@ def create_show_submission():
   formdata.pop('csrf_token')
  
   show = Show(**formdata)
-  try:
-    db.session.add(show)
-    db.session.commit()
-    flash('Show was successfully listed!')
-  except SQLAlchemyError as e:
-    db.session.rollback()
-    # TODO: on unsuccessful db insert, flash an error instead.
-    flash('An error occurred. Show could not be listed.')
-  finally:
-    db.session.close()
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Show could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-  return render_template('pages/home.html')
+  
+  # Validate Show form entry before submission
+  if form.validate():
+        try:
+          db.session.add(show)
+          db.session.commit()
+          flash('Show was successfully listed!','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          # TODO: on unsuccessful db insert, flash an error instead.
+          flash('An error occurred. Show could not be listed.','error')
+        finally:
+          db.session.close()
+        # TODO: on unsuccessful db insert, flash an error instead.
+        # e.g., flash('An error occurred. Show could not be listed.')
+        # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+        return render_template('pages/home.html')
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/new_show.html', form=form)
 
 @app.errorhandler(404)
 def not_found_error(error):

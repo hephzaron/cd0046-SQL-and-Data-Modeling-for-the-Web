@@ -255,3 +255,18 @@ h2.monospace {
 .delete-venue {
     float: right;
 }
+
+.alert-error {
+    background-color: rgb(235, 23, 23);
+    color: white;
+}
+
+.alert-success {
+    background-color: rgb(9, 97, 43);
+    color: white;
+}
+
+.alert-info {
+    background-color: rgb(124, 122, 10);
+    color: white
+}
