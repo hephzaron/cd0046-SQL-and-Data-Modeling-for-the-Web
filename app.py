@@ -28,24 +28,22 @@ app = Flask(__name__)
 moment = Moment(app)
 
 # TODO: connect to a local postgresql database
-
 DATABASE_USERNAME=config('DATABASE_USERNAME')
 DATABASE_PASSWORD=config('DATABASE_PASSWORD')
 DATABASE_SERVER=config('DATABASE_SERVER')
 DATABASE_NAME=config('DATABASE_NAME')
 SQLALCHEMY_TRACK_MODIFICATIONS = config('SQLALCHEMY_TRACK_MODIFICATIONS')
 SECRET_KEY = config('SECRET_KEY')
+SQLALCHEMY_ECHO = config('SQLALCHEMY_ECHO')
 
 app.config[
   'SQLALCHEMY_DATABASE_URI'
   ] = f'postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_SERVER}/{DATABASE_NAME}'
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
-
 app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SQLALCHEMY_ECHO'] = eval(SQLALCHEMY_ECHO)
 
 db.init_app(app)
-
 migrate = Migrate(app, db)
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
@@ -67,6 +65,8 @@ app.jinja_env.filters['datetime'] = format_datetime
 #----------------------------------------------------------------------------#
 # Controllers.
 #----------------------------------------------------------------------------#
+
+# Get home page
 @app.route('/')
 def index():
   return render_template('pages/home.html')
@@ -74,13 +74,18 @@ def index():
 
 #  Venues
 #  ----------------------------------------------------------------
-
+# Get list of venues
 @app.route('/venues', methods=['GET'])
 def venues():
   # TODO: replace with real venues data.
-  #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
+  # num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
   
   # Query to fetch venues and number of upcoming shows
+  # SQL Equivalent:
+  # SELECT venue.id AS venue_id, venue.name AS venue_name, 
+  # count(CASE WHEN (date(show.start_time) > %(date_1)s) THEN %(param_1)s END) AS num_upcoming_shows, 
+  # venue.city AS venue_city
+  # FROM venue LEFT OUTER JOIN show ON venue.id = show.venue_id GROUP BY venue.id, venue.name
   venues = db.session.query(
     Venue.id,
     Venue.name,
@@ -90,6 +95,9 @@ def venues():
     ).add_columns(Venue.city).outerjoin(Show).group_by(Venue.id, Venue.name).all()
   
   # Query to group Venues by city
+  # SQL Equivalent:
+  # SELECT venue.city AS venue_city, venue.state AS venue_state 
+  # FROM venue GROUP BY venue.city, venue.state
   venue_groups = db.session.query(
     Venue.city,
     Venue.state
@@ -105,6 +113,7 @@ def venues():
   
   return render_template('pages/venues.html', areas=data);
 
+# Route to search venue from the venues table
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
   # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
@@ -113,6 +122,11 @@ def search_venues():
   search_term = request.form.get('search_term', '')
   
   # Query to search by Venue names
+  # SQL Equivalent:
+  # SELECT venue.id AS venue_id, venue.name AS venue_name,
+  # count(CASE WHEN (date(show.start_time) > GETDATE()) THEN %(param_1)s END) AS num_upcoming_shows
+  # FROM venue LEFT OUTER JOIN show ON venue.id = show.venue_id
+  # WHERE venue.name ILIKE %(search_term)s GROUP BY venue.id, venue.name ORDER BY venue.name
   found_venues = db.session.query(
     Venue.id,
     Venue.name,
@@ -131,18 +145,28 @@ def search_venues():
     'pages/search_venues.html',results=response, search_term=request.form.get('search_term', '')
     )
 
+# GET request to show a venue using venue Id
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   # Get the queries of all required columns
+  # SQL Equivalent:
+  # SELECT * FROM venue
+  # WHERE venue.id = @venue_id
+  # LIMIT 1
   all_columns = select(Venue).where(Venue.id==venue_id).subquery() 
+  
   venue = db.session.query(all_columns).first()
   
   # Convert into a readable dict format
   venue = dict(venue)
   
   # Get a list of past shows in a venue by various artist
+  # SQL Equivalent:
+  # SELECT artist.id AS artist_id, artist.name AS artist_name, artist.image_link AS artist_image_link, show.start_time AS show_start_time
+  # FROM artist LEFT OUTER JOIN show ON artist.id = show.artist_id
+  # WHERE show.venue_id = @venue_id AND date(show.start_time) <= GETDATE();
   past_shows = db.session.query(
     Artist.id.label('artist_id'),
     Artist.name.label('artist_name'),
@@ -153,6 +177,10 @@ def show_venue(venue_id):
     
   
   # Get a list of upcoming shows in a venue by various artist
+  # SQL Equivalent:
+  # SELECT artist.id AS artist_id, artist.name AS artist_name, artist.image_link AS artist_image_link, show.start_time AS show_start_time
+  # FROM artist LEFT OUTER JOIN show ON artist.id = show.artist_id
+  # WHERE show.venue_id = @venue_id AND date(show.start_time) >= GETDATE();
   upcoming_shows = db.session.query(
     Artist.id.label('artist_id'),
     Artist.name.label('artist_name'),
@@ -235,23 +263,33 @@ def delete_venue(venue_id):
 
 #  Artists
 #  ----------------------------------------------------------------
+# Get list of created artists
 @app.route('/artists')
 def artists():
   # TODO: replace with real data returned from querying the database
+  # SQL Equivalent
+  # SELECT artist.id AS artist_id, artist.name AS artist_name 
+  # FROM artist ORDER BY artist.name
   data = db.session.query(
     Artist.id,
     Artist.name
   ).order_by('name').all()
   return render_template('pages/artists.html', artists=data)
 
+# Route to search for an artist from the artist table
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
   # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
   # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
   # search for "band" should return "The Wild Sax Band".
+  
   search_term = request.form.get('search_term', '')
   
   # Query to search by Artist names
+  # SQL Equivalent: 
+  # SELECT artist.id AS artist_id, artist.name AS artist_name, count(CASE WHEN (date(show.start_time) > GETDATE()) THEN %(param_1)s END) AS num_upcoming_shows
+  # FROM artist LEFT OUTER JOIN show ON artist.id = show.artist_id
+  # WHERE artist.name ILIKE %(@search_item)s GROUP BY artist.id, artist.name ORDER BY artist.name
   found_artists = db.session.query(
     Artist.id,
     Artist.name,
@@ -272,6 +310,10 @@ def search_artists():
 def show_artist(artist_id):
   # shows the artist page with the given artist_id
   # TODO: replace with real artist data from the artist table, using artist_id
+  # SQL Equivalent:
+  # SELECT * FROM artist
+  # WHERE artist.id = artist_id
+  # LIMIT 1;
   all_columns = select(Artist).where(Artist.id==artist_id).subquery()
   artist = db.session.query(all_columns).first()
   
@@ -279,6 +321,10 @@ def show_artist(artist_id):
   artist = dict(artist)
   
   # Get a list of past shows by an artist in various venues
+  # SQL Equivalents:
+  # SELECT venue.id AS venue_id, venue.name AS venue_name, venue.image_link AS venue_image_link, show.start_time AS show_start_time
+  # FROM venue LEFT OUTER JOIN show ON venue.id = show.venue_id
+  # WHERE show.artist_id = artist_id AND date(show.start_time) < GETDATE();
   past_shows = db.session.query(
     Venue.id.label('venue_id'),
     Venue.name.label('venue_name'),
@@ -288,6 +334,10 @@ def show_artist(artist_id):
     
   
   # Get a list of upcoming shows by an artist in various venues
+  # SQL Equivalents:
+  # SELECT venue.id AS venue_id, venue.name AS venue_name, venue.image_link AS venue_image_link, show.start_time AS show_start_time
+  # FROM venue LEFT OUTER JOIN show ON venue.id = show.venue_id
+  # WHERE show.artist_id = artist_id AND date(show.start_time) > GETDATE();
   upcoming_shows = db.session.query(
     Venue.id.label('venue_id'),
     Venue.name.label('venue_name'),
@@ -444,6 +494,10 @@ def create_artist_submission():
 def shows():
   # displays list of shows at /shows
   # TODO: replace with real venues data.
+  # SQL Equivalent:
+  # SELECT show.venue_id, venue.name AS venue_name, show.artist_id, artist.name AS artist_name,
+  # artist.image_link AS artist_image_link, show.start_time AS show_start_time 
+  # FROM show JOIN artist ON artist.id = show.artist_id JOIN venue ON venue.id = show.venue_id
   shows = db.session.query(
     Show.venue_id,
     Venue.name.label('venue_name'),
