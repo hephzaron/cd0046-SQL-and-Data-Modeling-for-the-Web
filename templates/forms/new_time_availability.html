@@ -1,0 +1,20 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Schedule Listing{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form method="post" class="form">
+      {{ form.csrf_token }}
+      <h3 class="form-heading">Indicate your availability</h3>
+      <div class="form-group">
+        <label for="artist_id">Artist ID</label>
+        <small>ID can be found on the Artist's Page</small>
+        {{ form.artist_id(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+          <label for="available_date">Available Date</label>
+          {{ form.available_date(class_ = 'form-control', placeholder='YYYY-MM-DD HH:MM', autofocus = true) }}
+        </div>
+      <input type="submit" value="Create New Schedule" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+{% endblock %}

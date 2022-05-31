@@ -91,7 +91,7 @@ class ShowForm(Form):
     )
     start_time = DateTimeField(
         'start_time',
-        validators=[DataRequired(message='Show time field is required')],
+        validators=[DataRequired(message='Invalid entry: correct time for show is required')],
         default= datetime.today()
     )
 
@@ -193,3 +193,14 @@ class ArtistForm(Form):
             ]
         )
 
+
+class TimeAvailabilityForm(Form):
+    artist_id = IntegerField(
+        'artist_id',
+        validators=[InputRequired(message='Artist ID field is required')]
+    )
+    available_date = DateTimeField(
+        'available_date',
+        validators=[DataRequired(message='Invalid entry: correct date/time is required')],
+        default= datetime.today()
+    )

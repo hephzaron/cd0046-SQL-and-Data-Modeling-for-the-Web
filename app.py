@@ -1,6 +1,7 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+from zoneinfo import available_timezones
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -20,7 +21,7 @@ import babel
 # Import Models.
 #----------------------------------------------------------------------------#
 
-from models.models import Venue, Artist, Show, db
+from models.models import Venue, Artist, Show, TimeAvailability, Album, Song, db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -223,10 +224,11 @@ def create_venue_submission():
           db.session.add(venue)
           db.session.commit()
           flash('Venue ' +request.form['name']  + ' was successfully listed!','success')
-        except:
+        except SQLAlchemyError as e:
           db.session.rollback()
           # TODO: on unsuccessful db insert, flash an error instead.
           flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.', 'error')
+          return render_template('forms/new_venue.html', form=form)
         finally:
           db.session.close()
           # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
@@ -523,7 +525,14 @@ def create_show_submission():
   formdata = form.data
   # Remove csrf_token from data to be persisted to db
   formdata.pop('csrf_token')
- 
+  
+  time_availability = db.session.query(TimeAvailability).filter(TimeAvailability.artist_id==formdata['artist_id']).first()
+  
+  if (time_availability != formdata['start_time']):
+        flash('This artist is not available on '+ format_datetime(formdata['start_time']),'info')
+        return render_template('forms/new_show.html', form=form)
+        
+   
   show = Show(**formdata)
   
   # Validate Show form entry before submission
@@ -536,6 +545,7 @@ def create_show_submission():
           db.session.rollback()
           # TODO: on unsuccessful db insert, flash an error instead.
           flash('An error occurred. Show could not be listed.','error')
+          return render_template('forms/new_show.html', form=form)
         finally:
           db.session.close()
         # TODO: on unsuccessful db insert, flash an error instead.
@@ -545,6 +555,47 @@ def create_show_submission():
   else:
         flash(form.errors,'error')
         return render_template('forms/new_show.html', form=form)
+      
+# Add: Display form to create available times
+@app.route('/available/create')
+def create_available_time():
+      
+  # renders availability form
+  form = TimeAvailabilityForm()
+  return render_template('forms/new_time_availability.html', form=form)
+
+# Add: An artist can create time to be avialble for booking
+@app.route('/available/create', methods=['POST'])
+def create_available_time_submission():
+  # called to create new shows in the db, upon submitting new show listing form
+  # TODO: insert form data as a new Show record in the db, instead
+  form = TimeAvailabilityForm(formdata=MultiDict(request.form))
+  formdata = form.data
+  # Remove csrf_token from data to be persisted to db
+  formdata.pop('csrf_token')
+  
+  time_availability = TimeAvailability(**formdata)
+  
+  # Validate Show form entry before submission
+  if form.validate():
+        try:
+          db.session.add(time_availability)
+          db.session.commit()
+          flash('Available time was successfully added!','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          # TODO: on unsuccessful db insert, flash an error instead.
+          flash('An error occurred. Time scheduled could not be listed.','error')
+          return render_template('forms/new_time_availability.html', form=form)
+        finally:
+          db.session.close()
+        # TODO: on unsuccessful db insert, flash an error instead.
+        # e.g., flash('An error occurred. Show could not be listed.')
+        # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+        return render_template('forms/new_time_availability.html', form=form)
+  else:
+        flash(form.errors,'error')
+        return render_template('forms/new_time_availability.html', form=form)
 
 @app.errorhandler(404)
 def not_found_error(error):

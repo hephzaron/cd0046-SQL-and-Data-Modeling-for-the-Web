@@ -103,7 +103,7 @@ class Song(db.Model):
     def __repr__(self):
         return f'<Song {self.id} {self.name} {self.composer}>'
     
-class TimeAvailabilty(db.Model):
+class TimeAvailability(db.Model):
     __tablename__ = 'time_availability'
     
     id = db.Column(db.Integer, primary_key=True)
