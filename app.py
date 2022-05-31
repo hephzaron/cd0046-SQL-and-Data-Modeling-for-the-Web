@@ -526,13 +526,15 @@ def create_show_submission():
   # Remove csrf_token from data to be persisted to db
   formdata.pop('csrf_token')
   
-  time_availability = db.session.query(TimeAvailability).filter(TimeAvailability.artist_id==formdata['artist_id']).first()
+  time_availability = db.session.query(TimeAvailability).filter(
+    TimeAvailability.artist_id==formdata['artist_id']).first()
   
-  if (time_availability != formdata['start_time']):
+  # Disallow booking an artist outside his schedule provided he has atleast  an available time
+  if (time_availability != None and time_availability != formdata['start_time'] ):
         flash('This artist is not available on '+ format_datetime(formdata['start_time']),'info')
         return render_template('forms/new_show.html', form=form)
-        
-   
+      
+      
   show = Show(**formdata)
   
   # Validate Show form entry before submission
