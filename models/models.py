@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 db = SQLAlchemy()
+
+# Association table between Artist and Venue
 class Show(db.Model):
     __tablename__ = 'show'
     
@@ -31,6 +34,10 @@ class Venue(db.Model):
     seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(120))
     
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now())   
+    
+    # Venue relationship with Artist
     artists = db.relationship('Show', back_populates='venue')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
@@ -52,11 +59,53 @@ class Artist(db.Model):
     seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String(120))
     
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
+    # Artist relationship with Venue
     venues = db.relationship('Show', back_populates = 'artist')
+    # Artist relationship with Album
+    albums = db.relationship('Album', backref='artist')
+    # Artist relationship with time_availability
+    time_availabilities = db.relationship('TimeAvailability', backref='time_availability')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
         return f'<Artist {self.id} {self.name} {self.state}>'
+    
 
- 
+class Album(db.Model):
+    __tablename__ = 'album'
+
+    id = db.Column(db.Integer, primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
+    title = db.Column(db.String(), nullable=False)
+    image_link = db.Column(db.String(500))
+    released_date = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
+    
+    # Album relationship with Song
+    songs = db.relationship('Song', backref='album')
+    
+    def __repr__(self):
+        return f'<Album {self.id} {self.title}>'
+
+
+class Song(db.Model):
+    __tablename__ = 'song'
+
+    id = db.Column(db.Integer, primary_key=True)
+    album_id = db.Column(db.Integer, db.ForeignKey('album.id'), nullable=False)
+    name = db.Column(db.String(), nullable=False)
+    genre = db.Column(db.String(), nullable=False)
+    duration_seconds = db.Column(db.Integer, nullable=False)
+    composer = db.Column(db.String(), nullable=False)
+    
+    def __repr__(self):
+        return f'<Song {self.id} {self.name} {self.composer}>'
+    
+class TimeAvailabilty(db.Model):
+    __tablename__ = 'time_availability'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
+    available_date = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
