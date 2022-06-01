@@ -1,6 +1,7 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+from tkinter.tix import DisplayStyle
 from zoneinfo import available_timezones
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_moment import Moment
@@ -11,8 +12,8 @@ from werkzeug.datastructures import MultiDict
 from forms import *
 from flask_migrate import Migrate
 from decouple import config
-from datetime import date
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import timedelta, datetime, timezone, date
 import logging
 import dateutil.parser
 import babel
@@ -53,13 +54,19 @@ migrate = Migrate(app, db)
 # Filters.
 #----------------------------------------------------------------------------#
 
-def format_datetime(value, format='medium'):
-      date = dateutil.parser.parse(value) if isinstance(value, str) else value
+def format_datetime(value, format='medium', period=False):
+      parsed_date = dateutil.parser.parse(value) if isinstance(value, str) else value
+      if period:
+            # format time delta object to return the closest time tick
+            delta = (datetime.now(timezone.utc) - parsed_date)
+            return babel.dates.format_timedelta(delta, threshold=1, granularity='second',locale='en')
       if format == 'full':
             format="EEEE MMMM, d, y 'at' h:mma"
       elif format == 'medium':
             format="EE MM, dd, y h:mma"
-      return babel.dates.format_datetime(date, format, locale='en')
+      return babel.dates.format_datetime(parsed_date, format, locale='en')
+    
+
 
 app.jinja_env.filters['datetime'] = format_datetime
 
@@ -70,7 +77,11 @@ app.jinja_env.filters['datetime'] = format_datetime
 # Get home page
 @app.route('/')
 def index():
-  return render_template('pages/home.html')
+  
+  # Show recently added artists and venues
+  artists = db.session.query(Artist).order_by(Artist.created_at.desc()).limit(10).all()  
+  venues = db.session.query(Venue).order_by(Venue.created_at.desc()).limit(10).all()
+  return render_template('pages/home.html', artists=artists, venues=venues)
 
 
 #  Venues
@@ -233,7 +244,7 @@ def create_venue_submission():
           db.session.close()
           # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
           # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-        return render_template('pages/home.html')
+        return redirect(url_for('index'))
   else:
         flash(form.errors,'error')
         return render_template('forms/new_venue.html', form=form)
@@ -255,7 +266,7 @@ def delete_venue(venue_id):
   finally:
     db.session.close()
   if not error:
-        return render_template('pages/home.html')
+        return redirect(url_for('index'))
   else:
         not_found_error(e)
       
@@ -483,7 +494,7 @@ def create_artist_submission():
           server_error(e)
         finally:
           db.session.close()
-        return render_template('pages/home.html')
+        return redirect(url_for('index'))
   else:
         flash(form.errors,'error')
         return render_template('forms/new_artist.html', form=form)
@@ -553,7 +564,7 @@ def create_show_submission():
         # TODO: on unsuccessful db insert, flash an error instead.
         # e.g., flash('An error occurred. Show could not be listed.')
         # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-        return render_template('pages/home.html')
+        return redirect(url_for('index'))
   else:
         flash(form.errors,'error')
         return render_template('forms/new_show.html', form=form)
