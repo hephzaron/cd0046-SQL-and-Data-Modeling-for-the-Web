@@ -246,7 +246,7 @@ def create_venue_submission():
           # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
         return redirect(url_for('index'))
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_venue.html', form=form)
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
@@ -413,7 +413,7 @@ def edit_artist_submission(artist_id):
           db.session.close()    
         return redirect(url_for('show_artist', artist_id=artist_id))
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/edit_artist.html', form=form, artist=artist)       
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
@@ -459,7 +459,7 @@ def edit_venue_submission(venue_id):
           db.session.close()
         return redirect(url_for('show_venue', venue_id=venue_id))
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 #  Create Artist
@@ -496,7 +496,7 @@ def create_artist_submission():
           db.session.close()
         return redirect(url_for('index'))
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_artist.html', form=form)
 
 
@@ -566,7 +566,7 @@ def create_show_submission():
         # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
         return redirect(url_for('index'))
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_show.html', form=form)
       
 # Add: Display form to create available times
@@ -607,7 +607,7 @@ def create_available_time_submission():
         # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
         return render_template('forms/new_time_availability.html', form=form)
   else:
-        flash(form.errors,'error')
+        flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_time_availability.html', form=form)
 
 @app.errorhandler(404)

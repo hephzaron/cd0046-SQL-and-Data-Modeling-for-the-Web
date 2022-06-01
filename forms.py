@@ -112,7 +112,7 @@ class VenueForm(Form):
     phone = StringField(
         'phone', validators=[
             DataRequired(message='Your phone number is required'),
-            Regexp('^\d{10}$',message='Invalid entry, enter a correct 10-digit number')
+            Regexp('^\d{10}$',message='Invalid entry, enter a correct 10-digit phone number')
             ]
         )
     image_link = StringField(
@@ -161,7 +161,7 @@ class ArtistForm(Form):
         # TODO implement validation logic for state
         'phone', validators=[
             DataRequired(message='Your phone number is required'),
-            Regexp('^\d{10}$',message='Invalid entry, enter a correct 10-digit number')
+            Regexp('^\d{10}$',message='Invalid entry, enter a correct 10-digit phone number')
             ])
     image_link = StringField(
         'image_link', validators=[
