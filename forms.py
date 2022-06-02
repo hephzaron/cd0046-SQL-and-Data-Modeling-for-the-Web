@@ -103,7 +103,7 @@ class VenueForm(Form):
         'city', validators=[DataRequired(message='City field of venue cannot be empty')]
     )
     state = SelectField(
-        'state', validators=[DataRequired(message='Select one or more from the list of state')],
+        'state', validators=[DataRequired(message='State is field is required')],
         choices= states
     )
     address = StringField(
@@ -203,4 +203,43 @@ class TimeAvailabilityForm(Form):
         'available_date',
         validators=[DataRequired(message='Invalid entry: correct date/time is required')],
         default= datetime.today()
+    )
+    
+
+class AlbumForm(Form):
+    artist_id = IntegerField(
+        'artist_id', validators=[InputRequired(message='Artist ID field is required')]
+    )
+    title = StringField(
+        'title', validators=[DataRequired(message='Abum title field is required')]
+    )
+    image_link = StringField(
+        'image_link', validators=[
+            URL(require_tld=False, message='Invalid entry, an image URL is required')
+            ]
+        )
+    released_date = DateTimeField(
+        'released_date',
+        validators=[DataRequired(message='Invalid entry: correct date/time is required')],
+        default= datetime.today()
+    )
+
+class SongForm(Form):
+    album_id = IntegerField(
+        'artist_id', validators=[InputRequired(message='Artist ID field is required')]
+    )
+    name = StringField(
+        'name', validators=[DataRequired(message='Song name field is required')]
+    )
+    genre = SelectField(
+        'genre', validators=[DataRequired(message='Select from the list of genres')],
+        choices=genres
+     )
+    duration_seconds = IntegerField(
+        'duration_seconds', validators=[
+            DataRequired(message='Music duration in seconds is required')
+            ]
+    )
+    composer = StringField(
+        'composer', validators=[DataRequired(message='Composer is required')]
     )

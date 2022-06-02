@@ -1,0 +1,30 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Songs{% endblock %}
+{% block content %}
+{% if songs %}
+<h4>Album: {{album.album_title}}</h4>
+<ul class="items" class="dropdown-menu" role="menu">
+    {% for song in songs %}
+    <li>
+        <a>
+            <i class="fas fa-music"></i>
+            <div class="item">
+                <h5>{{ song.song_name }} ({{song.song_duration_seconds}}s)  - {{ song.song_composer }}</h5>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<h1>Oops ...</h1>
+<p>There's no song added to this album!</p>
+<h3>
+    <a href="{{url_for('show_artist', artist_id=album.artist_id)}}">
+        <button class="btn btn-primary btn-lg">Back</button>
+    </a>
+    <a href="{{url_for('create_song')}}">
+        <button class="btn btn-primary btn-lg">Add Song</button>
+    </a>
+</h3>
+{% endif %}
+{% endblock %}

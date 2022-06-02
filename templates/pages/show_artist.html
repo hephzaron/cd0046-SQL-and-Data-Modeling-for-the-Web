@@ -1,6 +1,7 @@
 {% extends 'layouts/main.html' %}
 {% block title %}{{ artist.name }} | Artist{% endblock %}
 {% block content %}
+<div class="col-sm-9">
 <div class="row">
 	<div class="col-sm-6">
 		<h1 class="monospace">
@@ -26,6 +27,9 @@
 		<p>
 			<i class="fab fa-facebook-f"></i> {% if artist.facebook_link %}<a href="{{ artist.facebook_link }}" target="_blank">{{ artist.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
         </p>
+		<p>
+			<i class="fab fa-album-f"></i> {% if artist.total_albums_count>0 %} Total album released: {{ artist.total_albums_count }}{% else %}No Album released{% endif %}
+        </p>
 		{% if artist.seeking_venue %}
 		<div class="seeking">
 			<p class="lead">Currently seeking performance venues</p>
@@ -41,6 +45,10 @@
 	</div>
 	<div class="col-sm-6">
 		<img src="{{ artist.image_link }}" alt="Artist Image" />
+		<h3 >
+			<a href="/album/create"><button class="btn btn-default btn-lg">Create Album</button></a>
+			<a href="/song/create"><button class="btn btn-default btn-lg">Add Song</button></a>
+		</h3>
 	</div>
 </div>
 <section>
@@ -71,8 +79,20 @@
 		{% endfor %}
 	</div>
 </section>
-
 <a href="/artists/{{ artist.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
-
+</div>
+<div class="col-sm-3">
+	<!--list artist album and songs-->
+	<h4> Albums</h4>
+	{% for album in artist.albums %}
+	<div class="col-lg">
+		<div class="album album-card dropdown">
+			<img src="{{ album.album_image_link }}" alt="Album Image" />
+			<h5><span>(ID: {{album.album_id}})</span><b><a href="/album/{{ album.album_id}}/songs"> {{ album.album_title }}</a></b></h5>
+			<h6>Released on {{album.album_released_date|datetime(format='small')}}</h6>
+		</div>
+	</div>
+	{% endfor %}
+</div>
 {% endblock %}
 

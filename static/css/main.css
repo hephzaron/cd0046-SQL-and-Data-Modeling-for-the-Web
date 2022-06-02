@@ -252,6 +252,9 @@ h2.monospace {
     opacity: 0.5;
 }
 
+
+/* Added styles*/
+
 .delete-venue {
     float: right;
 }
@@ -269,4 +272,20 @@ h2.monospace {
 .alert-info {
     background-color: rgb(143, 143, 10);
     color: white
+}
+
+.album .album-card {
+    height: 250px;
+}
+
+.album {
+    text-align: center;
+    padding: 5px 10px;
+    border: solid 1px #ebebeb;
+    height: 225px;
+    margin-bottom: 15px;
+}
+
+.album img {
+    max-height: 160px;
 }

@@ -1,7 +1,6 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
-from tkinter.tix import DisplayStyle
 from zoneinfo import available_timezones
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_moment import Moment
@@ -13,7 +12,7 @@ from forms import *
 from flask_migrate import Migrate
 from decouple import config
 from sqlalchemy.exc import SQLAlchemyError
-from datetime import timedelta, datetime, timezone, date
+from datetime import datetime, timezone, date
 import logging
 import dateutil.parser
 import babel
@@ -64,6 +63,8 @@ def format_datetime(value, format='medium', period=False):
             format="EEEE MMMM, d, y 'at' h:mma"
       elif format == 'medium':
             format="EE MM, dd, y h:mma"
+      elif format == 'small':
+            format="MMMM, y"
       return babel.dates.format_datetime(parsed_date, format, locale='en')
     
 
@@ -357,14 +358,42 @@ def show_artist(artist_id):
     Venue.image_link.label('venue_image_link'),
     Show.start_time).outerjoin(Show).filter(
     Show.artist_id==artist_id, func.date(Show.start_time)>=date.today()).all()
+   
+  # Get a list of albums by an artist
+  # SQL Equivalents:
+  # SELECT album.id AS album_id, album.title AS album_title, Album.image_link AS album_image_link, Album.released_date AS album_released_date
+  # FROM album
+  # WHERE album.artist_id = artist_id 
+  # SORT BY album.released_date DESC; 
+  albums = db.session.query(
+    Album.id.label('album_id'),
+    Album.title.label('album_title'),
+    Album.image_link.label('album_image_link'),
+    Album.released_date.label('album_released_date')
+    ).filter(Album.artist_id == artist_id).order_by(Album.released_date.desc()).all()
+  
+    
+  total_albums_count = len(albums)
+  
+  data = []
+  for album in albums:
+        obj={}
+        obj['album_id'] = album.album_id
+        obj['album_title'] = album.album_title
+        obj['album_image_link'] = album.album_image_link
+        obj['album_released_date'] = album.album_released_date
+        obj['total_albums_count'] = total_albums_count
+        data.append(obj)
     
   past_shows_count = len(past_shows)
   upcoming_shows_count = len(upcoming_shows)
-  
+
   artist['past_shows'] = list(past_shows)
   artist['upcoming_shows'] = list(upcoming_shows)
   artist['past_shows_count'] = past_shows_count
   artist['upcoming_shows_count'] = upcoming_shows_count
+  artist['total_albums_count'] = total_albums_count
+  artist['albums'] = data
   
   return render_template('pages/show_artist.html', artist=artist)
 
@@ -580,8 +609,7 @@ def create_available_time():
 # Add: An artist can create time to be avialble for booking
 @app.route('/available/create', methods=['POST'])
 def create_available_time_submission():
-  # called to create new shows in the db, upon submitting new show listing form
-  # TODO: insert form data as a new Show record in the db, instead
+      
   form = TimeAvailabilityForm(formdata=MultiDict(request.form))
   formdata = form.data
   # Remove csrf_token from data to be persisted to db
@@ -589,7 +617,7 @@ def create_available_time_submission():
   
   time_availability = TimeAvailability(**formdata)
   
-  # Validate Show form entry before submission
+  # Validate available time entry before submission
   if form.validate():
         try:
           db.session.add(time_availability)
@@ -609,6 +637,106 @@ def create_available_time_submission():
   else:
         flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_time_availability.html', form=form)
+      
+# Add: Display form to create an album
+@app.route('/album/create')
+def create_album():
+      
+  # renders album form
+  form = AlbumForm()
+  return render_template('forms/new_album.html', form=form)
+
+# Add: An album can be created for an artist
+@app.route('/album/create', methods=['POST'])
+def create_album_submission():
+  # called to create new album in the db, upon submitting new album form
+  form = AlbumForm(formdata=MultiDict(request.form))
+  formdata = form.data
+  # Remove csrf_token from data to be persisted to db
+  formdata.pop('csrf_token')
+  
+  album = Album(**formdata)
+  
+  # Validate Album form entry before submission
+  if form.validate():
+        try:
+          db.session.add(album)
+          db.session.commit()
+          flash(album.title + ' was successfully created!','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          
+          flash('An error occurred. {} could not be created'.format(album.title),'error')
+          return render_template('forms/new_album.html', form=form)
+        finally:
+          db.session.close()
+        return redirect(url_for('show_artist', artist_id=album.artist_id))
+  else:
+        flash(sum(form.errors.values(),[]),'error')
+        return render_template('forms/new_album.html', form=form)
+      
+# Add: Display form to create a song
+@app.route('/song/create')
+def create_song():
+      
+  # renders song form
+  form = SongForm()
+  return render_template('forms/new_song.html', form=form)
+
+# Add: A song can be created for an album
+@app.route('/song/create', methods=['POST'])
+def create_song_submission():
+  # called to create new song in the db, upon submitting new song form
+  form = SongForm(formdata=MultiDict(request.form))
+  formdata = form.data
+  # Remove csrf_token from data to be persisted to db
+  formdata.pop('csrf_token')
+  
+  song = Song(**formdata)
+  # Query to get artist id 
+  album = db.session.query(
+    Album.artist_id).join(Song).filter(
+      Song.album_id==form.album_id.data).first()
+  
+  # Validate Song form entry before submission
+  if form.validate():
+        try:
+          db.session.add(song)
+          db.session.commit()
+          flash(song.name + ' was successfully created!','success')
+        except SQLAlchemyError as e:
+          db.session.rollback()
+          flash('An error occurred. {} could not be created'.format(song.name),'error')
+          return render_template('forms/new_song.html', form=form)
+        finally:
+          db.session.close()
+          return redirect(url_for('show_artist', artist_id=album.artist_id))
+  else:
+        flash(sum(form.errors.values(),[]),'error')
+        return render_template('forms/new_song.html', form=form)
+      
+
+@app.route('/album/<int:album_id>/songs')
+def show_album_songs(album_id):
+      
+  album = db.session.query(
+    Album.title.label('album_title'),
+    Album.artist_id
+    ).filter(Album.id==album_id).first()
+  
+  songs = db.session.query(
+    Album,
+    Song.genre.label('song_genre'),
+    Song.duration_seconds.label('song_duration_seconds'),
+    Song.name.label('song_name'),
+    Song.composer.label('song_composer')
+    ).join(Song).filter(Album.id==album_id).all()
+  
+  print('album', album)
+  print('songs', songs)
+  return render_template('/pages/songs.html',album=album, songs=songs)
+      
+      
 
 @app.errorhandler(404)
 def not_found_error(error):
