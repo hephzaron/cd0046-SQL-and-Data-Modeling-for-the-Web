@@ -117,23 +117,5 @@
   <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
   <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
   <script type="text/javascript" src="/static/js/plugins.js" defer></script>
-  <script>
-    const deleteVenues = document.querySelectorAll('.delete-venue');
-    for(let i=0; i < deleteVenues.length; i++){
-      const deleteVenue = deleteVenues[i];
-      deleteVenue.onclick = function(e){
-        e.preventDefault();
-        const venueId = e.target.dataset['id'];
-        fetch('/venues/'+ venueId ,{
-          method: 'DELETE'
-        })
-        .then(function(){
-          const item = e.target.parentElement;
-          item.remove();
-        })
-      }
-    }
-  </script>
-
 </body>
 </html>

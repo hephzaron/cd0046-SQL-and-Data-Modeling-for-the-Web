@@ -12,8 +12,10 @@
 					<h5>{{ venue.name }}</h5>
 				</div>
 			</a>
-			<button class="btn btn-primary delete-venue" data-id="{{ venue.id }}">Delete</button>
 		</li>
+		<a href="{{url_for('delete_venue', venue_id=venue.id)}}">
+			<button class="btn btn-primary btn-lg">Delete</button>
+		</a>
 		{% endfor %}
 	</ul>
 {% endfor %}

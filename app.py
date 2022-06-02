@@ -250,26 +250,26 @@ def create_venue_submission():
         flash(sum(form.errors.values(),[]),'error')
         return render_template('forms/new_venue.html', form=form)
 
-@app.route('/venues/<venue_id>', methods=['DELETE'])
+@app.route('/venues/<venue_id>/delete')
 def delete_venue(venue_id):
-  # TODO: Complete this endpoint for taking a venue_id, and using
-  # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-  
-  error = e
-  try:
-    venue = Venue.query.get(venue_id)
-    db.session.delete(venue)
-    db.session.commit()
-  except SQLAlchemyError as e:
-    error = e
-    db.session.rollback()
-    flash('An error occurred venue could not be deleted','error')
-  finally:
-    db.session.close()
-  if not error:
-        return redirect(url_for('index'))
-  else:
-        not_found_error(e)
+      # TODO: Complete this endpoint for taking a venue_id, and using
+      # # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
+      try:
+        venue = Venue.query.get(venue_id)
+        venue_shows = db.session.query(Show).filter(Show.venue_id == venue_id).all()
+        # Delete venue associations in shows table to enforce not null venue_id in show
+        for show in venue_shows:
+              db.session.delete(show)
+        db.session.delete(venue)
+        db.session.commit()
+        flash('Venue {} was deleted successfully'.format(venue.name),'success')
+      except SQLAlchemyError as e:
+        db.session.rollback()
+        return not_found_error(e)
+      finally:
+        db.session.close()  
+        
+      return redirect(url_for('index'))
       
 
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
@@ -437,7 +437,7 @@ def edit_artist_submission(artist_id):
         except SQLAlchemyError as e:
           db.session.rollback()    
           flash('An error occurred. Artist ' + artist['name'] + ' could not be updated.', 'error')
-          server_error(e)
+          return server_error(e)
         finally:
           db.session.close()    
         return redirect(url_for('show_artist', artist_id=artist_id))
@@ -483,7 +483,7 @@ def edit_venue_submission(venue_id):
         except SQLAlchemyError as e:
           db.session.rollback()
           flash('An error occurred. Venue ' + venue['name'] + ' could not be updated.', 'error')
-          server_error(e)
+          return server_error(e)
         finally:
           db.session.close()
         return redirect(url_for('show_venue', venue_id=venue_id))
@@ -520,7 +520,7 @@ def create_artist_submission():
           db.session.rollback()
           # TODO: on unsuccessful db insert, flash an error instead.
           flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.', 'error')
-          server_error(e)
+          return server_error(e)
         finally:
           db.session.close()
         return redirect(url_for('index'))
