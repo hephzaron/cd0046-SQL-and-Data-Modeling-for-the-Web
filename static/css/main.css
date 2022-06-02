@@ -289,3 +289,7 @@ h2.monospace {
 .album img {
     max-height: 160px;
 }
+
+ul li {
+    display: inline-block;
+}

@@ -140,7 +140,7 @@ class VenueForm(Form):
 
     seeking_description = StringField(
         'seeking_description', validators=[
-            Length(min=1, max=250, message='Description should be kept at 1-250 character')
+            Length(max=250, message='Description should not be more than 250 characters')
             ]
         )
 
