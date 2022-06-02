@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+from sqlalchemy.orm import validates
+from re import fullmatch
+from urllib.parse import urlparse
 
 db = SQLAlchemy()
 
@@ -39,6 +42,100 @@ class Venue(db.Model):
     
     # Venue relationship with Artist
     artists = db.relationship('Show', back_populates='venue')
+    
+    @validates('name')
+    def validate_venue_name(self, _, venue_name):
+        if venue_name is None or venue_name =="":
+            raise AssertionError(
+                'The venue name field is required'
+                )
+        if Venue.query.filter(Venue.name == venue_name).first():
+            raise AssertionError(
+                'Venue {} already exist'.format(venue_name)
+            )
+        return venue_name
+    
+    @validates('city')
+    def validate_venue_city(self, _, venue_city):
+        if venue_city is None or venue_city =="":
+            raise AssertionError(
+                'The city name field is required'
+                )
+        if not (fullmatch('^(\w\s?)+$', venue_city)):
+            raise AssertionError(
+                'City name can contain alphanumeric characters only'
+                )
+        return venue_city
+    
+    @validates('state')
+    def validate_venue_state(self, _, venue_state):
+        if venue_state is None or venue_state =="":
+            raise AssertionError(
+                'The state name field is required'
+                )
+        if not (fullmatch('^[A-Z]{2}$', venue_state)):
+            raise AssertionError(
+                'The name of state should be all capital letter and 2 letters'
+                )
+        return venue_state
+    
+    @validates('address')
+    def validate_venue_address(self, _, venue_address):
+        if venue_address is None or venue_address =="":
+            raise AssertionError(
+                'Address field is required'
+                )
+        if not (fullmatch('^(\w\s?)+$', venue_address)):
+            raise AssertionError(
+                'The address can be alphanumeric charcters only'
+                )
+        return venue_address
+    
+    @validates('phone')
+    def validate_venue_phone(self, _, venue_phone):
+        if venue_phone is None or venue_phone =="":
+            raise AssertionError(
+                'Phone number is required'
+                )
+        if not (fullmatch('^\d{10}$', venue_phone)):
+            raise AssertionError(
+                'Phone should be exactly ten digit in mumber'
+                )
+        return venue_phone
+    
+    @validates('image_link')
+    def validate_venue_image_link(self, _, venue_image_link):
+        if venue_image_link is None or venue_image_link =="":
+            raise AssertionError(
+                "Enter the URL of your venue's image"
+                )
+        return venue_image_link
+    
+    @validates('facebook_link')
+    def validate_venue_facebook_link(self, _, venue_facebook_link):
+        if not (fullmatch(
+            '^(?:https:\/\/)?(?:web\.)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)$',
+            venue_facebook_link)):
+            raise AssertionError(
+                'URL must be a facebook link'
+                )
+        return venue_facebook_link
+    
+    @validates('website_link')
+    def validate_venue_website_link(self, _, venue_website_link):
+        if not (fullmatch('^(?:http:\/\/)?(?:https:\/\/)?(?:web\.)?(?:www\.)?\w+\\.\w*', venue_website_link)):
+            raise AssertionError(
+                'A valid URL must be entered'
+                )
+        return venue_website_link
+    
+    @validates('seeking_description')
+    def validate_venue_seeking_description(self, _, venue_seeking_descriptiuon):
+        if len(venue_seeking_descriptiuon) >= 250:
+            raise AssertionError(
+                'venue description should not exceed 250 characters'
+            )
+        return venue_seeking_descriptiuon
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
