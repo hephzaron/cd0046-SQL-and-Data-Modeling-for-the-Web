@@ -695,8 +695,8 @@ def create_song_submission():
   song = Song(**formdata)
   # Query to get artist id 
   album = db.session.query(
-    Album.artist_id).join(Song).filter(
-      Song.album_id==form.album_id.data).first()
+    Album.artist_id).filter(
+      Album.id==form.album_id.data).first()
   
   # Validate Song form entry before submission
   if form.validate():

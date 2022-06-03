@@ -72,10 +72,6 @@ class Venue(db.Model):
             raise AssertionError(
                 'Address field is required'
                 )
-        if not (fullmatch('^(\w\s?)+$', venue_address)):
-            raise AssertionError(
-                'The address can be alphanumeric charcters only'
-                )
         return venue_address
     
     @validates('phone')
