@@ -1,26 +1,13 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from sqlalchemy.orm import validates
 from re import fullmatch
-from urllib.parse import urlparse
+import dateutil.parser
 
 db = SQLAlchemy()
 
 # Association table between Artist and Venue
-class Show(db.Model):
-    __tablename__ = 'show'
-    
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
-    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=False)
-    start_time = db.Column(db.DateTime(timezone=True), nullable=False)
-    
-    venue = db.relationship('Venue', back_populates = 'artists')
-    artist = db.relationship('Artist', back_populates = 'venues')
-    
-    def __repr__(self):
-        return f'<Show {self.id} {self.start_time}>'
-    
 class Venue(db.Model):
     __tablename__ = 'venue'
 
@@ -51,7 +38,7 @@ class Venue(db.Model):
                 )
         if Venue.query.filter(Venue.name == venue_name).first():
             raise AssertionError(
-                'Venue {} already exist'.format(venue_name)
+                'Venue: {} already exist'.format(venue_name)
             )
         return venue_name
     
@@ -171,6 +158,66 @@ class Artist(db.Model):
         return f'<Artist {self.id} {self.name} {self.state}>'
     
 
+class Show(db.Model):
+    __tablename__ = 'show'
+    
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=False)
+    start_time = db.Column(db.DateTime(timezone=True), nullable=False)
+    
+    venue = db.relationship('Venue', back_populates = 'artists')
+    artist = db.relationship('Artist', back_populates = 'venues')
+    
+    @validates('artist_id')
+    def validate_show_artist_id(self, _, show_artist_id):
+        if show_artist_id is None or show_artist_id =="":
+            raise AssertionError(
+                'The artist id field is required'
+                )
+        if not Artist.query.filter(Artist.id == show_artist_id).first():
+            raise AssertionError(
+                'Artist with ID: {} does not exist'.format(show_artist_id)
+            )
+        if not (show_artist_id >= 0):
+            raise AssertionError(
+                'Artist ID must be a positive number, you entered ID: {}'.format(show_artist_id)
+            )
+        return show_artist_id
+    
+    @validates('venue_id')
+    def validate_show_venue_id(self, _, show_venue_id):
+        if show_venue_id is None or show_venue_id =="":
+            raise AssertionError(
+                'The venue id field is required'
+                )
+        if not Venue.query.filter(Venue.id == show_venue_id).first():
+            raise AssertionError(
+                'Venue with ID: {} does not exist'.format(show_venue_id)
+            )
+        if not (show_venue_id >= 0):
+            raise AssertionError(
+                'Venue ID must be a positive number, you entered ID: {}'.format(show_venue_id)
+            )
+        return show_venue_id
+    
+    @validates('start_time')
+    def validate_show_start_time(self, _, show_start_time):
+        
+        if show_start_time is None or show_start_time =="":
+            raise AssertionError(
+                'The show start time field is required'
+                )
+        if not (show_start_time >= datetime.utcnow()):
+            raise AssertionError(
+                'Show can only be booked not earlier than today'
+            )
+        return show_start_time
+        
+    
+    def __repr__(self):
+        return f'<Show {self.id} {self.start_time}>'
+    
 class Album(db.Model):
     __tablename__ = 'album'
 
