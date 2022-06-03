@@ -261,7 +261,7 @@ class Show(db.Model):
             raise AssertionError(
                 'Artist with ID: {} does not exist'.format(show_artist_id)
             )
-        if not (show_artist_id >= 0):
+        if not (show_artist_id > 0):
             raise AssertionError(
                 'Artist ID must be a positive number, you entered ID: {}'.format(show_artist_id)
             )
@@ -277,7 +277,7 @@ class Show(db.Model):
             raise AssertionError(
                 'Venue with ID: {} does not exist'.format(show_venue_id)
             )
-        if not (show_venue_id >= 0):
+        if not (show_venue_id > 0):
             raise AssertionError(
                 'Venue ID must be a positive number, you entered ID: {}'.format(show_venue_id)
             )
@@ -285,7 +285,7 @@ class Show(db.Model):
     
     @validates('start_time')
     def validate_show_start_time(self, _, show_start_time):
-        
+                
         if show_start_time is None or show_start_time =="":
             raise AssertionError(
                 'The show start time field is required'
@@ -312,6 +312,38 @@ class Album(db.Model):
     # Album relationship with Song
     songs = db.relationship('Song', backref='album')
     
+    @validates('artist_id')
+    def validate_album_artist_id(self, _, album_artist_id):
+        if album_artist_id is None or album_artist_id =="":
+            raise AssertionError(
+                'The artist id field is required'
+                )
+        if not (album_artist_id > 0):
+            raise AssertionError(
+                'Artist ID must be a positive number, you entered ID: {}'.format(album_artist_id)
+            )
+        if not Artist.query.filter(Artist.id == album_artist_id).first():
+            raise AssertionError(
+                'Artist with ID: {} does not exist'.format(album_artist_id)
+            )
+        return album_artist_id
+    
+    @validates('title')
+    def validate_album_title(self, _, album_title):
+        if album_title is None or album_title =="":
+            raise AssertionError(
+                'The album title field is required'
+                )
+        return album_title
+    
+    @validates('image_link')
+    def validate_album_image_link(self, _,album_image_link):
+        if album_image_link is None or album_image_link =="":
+            raise AssertionError(
+                "Enter the URL of your album's image"
+                )
+        return album_image_link
+    
     def __repr__(self):
         return f'<Album {self.id} {self.title}>'
 
@@ -326,6 +358,58 @@ class Song(db.Model):
     duration_seconds = db.Column(db.Integer, nullable=False)
     composer = db.Column(db.String(), nullable=False)
     
+    @validates('album_id')
+    def validate_song_album_id(self, _, song_album_id):
+        if song_album_id is None or song_album_id =="":
+            raise AssertionError(
+                'The album id field is required'
+                )
+        if not (song_album_id > 0):
+            raise AssertionError(
+                'Album ID must be a positive number, you entered ID: {}'.format(song_album_id)
+            )
+        if not Album.query.filter(Album.id == song_album_id).first():
+            raise AssertionError(
+                'Album with ID: {} does not exist'.format(song_album_id)
+            )
+        return song_album_id
+    
+    @validates('name')
+    def validate_song_name(self, _, song_name):
+        if song_name is None or song_name =="":
+            raise AssertionError(
+                'The song name field is required'
+                )
+        return song_name
+    
+    @validates('genre')
+    def validate_song_genre(self, _, song_genre):
+        if song_genre is None or song_genre =="":
+            raise AssertionError(
+                'The genre name field is required'
+                )
+        return song_genre
+    
+    @validates('duration_seconds')
+    def validate_song_duration_seconds(self, _, song_duration_seconds):
+        if song_duration_seconds is None or song_duration_seconds =="":
+            raise AssertionError(
+                'The song duration in seconds is required'
+                )
+        if not (song_duration_seconds > 0):
+            raise AssertionError(
+                'Song duration must be a positive number, you entered : {}'.format(song_duration_seconds)
+            )
+        return song_duration_seconds
+    
+    @validates('composer')
+    def validate_song_composer(self, _, song_composer):
+        if song_composer is None or song_composer =="":
+            raise AssertionError(
+                'The song composer name field is required'
+                )
+        return song_composer
+    
     def __repr__(self):
         return f'<Song {self.id} {self.name} {self.composer}>'
     
@@ -335,3 +419,22 @@ class TimeAvailability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
     available_date = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
+    
+    @validates('artist_id')
+    def validate_available_artist_id(self, _, available_artist_id):
+        if available_artist_id is None or available_artist_id =="":
+            raise AssertionError(
+                'The artist id field is required'
+                )
+        if not Artist.query.filter(Artist.id == available_artist_id).first():
+            raise AssertionError(
+                'Artist with ID: {} does not exist'.format(available_artist_id)
+            )
+        if not (available_artist_id > 0):
+            raise AssertionError(
+                'Artist ID must be a positive number, you entered ID: {}'.format(available_artist_id)
+            )
+        return available_artist_id
+    
+    def __repr__(self):
+        return f'<TimeAvailability {self.id} {self.artist_id} {self.available_date}>'
