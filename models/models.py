@@ -152,6 +152,88 @@ class Artist(db.Model):
     albums = db.relationship('Album', backref='artist')
     # Artist relationship with time_availability
     time_availabilities = db.relationship('TimeAvailability', backref='time_availability')
+    
+    @validates('name')
+    def validate_artist_name(self, _, artist_name):
+        if artist_name is None or artist_name =="":
+            raise AssertionError(
+                'The artist name field is required'
+                )
+        if Artist.query.filter(Artist.name == artist_name).first():
+            raise AssertionError(
+                'Artist: {} already exist'.format(artist_name)
+            )
+        return artist_name
+    
+    @validates('city')
+    def validate_artist_city(self, _, artist_city):
+        if artist_city is None or artist_city =="":
+            raise AssertionError(
+                'The city name field is required'
+                )
+        if not (fullmatch('^(\w\s?)+$', artist_city)):
+            raise AssertionError(
+                'City name can contain alphanumeric characters only'
+                )
+        return artist_city
+    
+    @validates('state')
+    def validate_artist_state(self, _, artist_state):
+        if artist_state is None or artist_state =="":
+            raise AssertionError(
+                'The state name field is required'
+                )
+        if not (fullmatch('^[A-Z]{2}$', artist_state)):
+            raise AssertionError(
+                'The name of state should be all capital letter and 2 letters'
+                )
+        return artist_state
+        
+    @validates('phone')
+    def validate_artist_phone(self, _, artist_phone):
+        if artist_phone is None or artist_phone =="":
+            raise AssertionError(
+                'Phone number is required'
+                )
+        if not (fullmatch('^\d{10}$', artist_phone)):
+            raise AssertionError(
+                'Phone should be exactly ten digit in mumber'
+                )
+        return artist_phone
+    
+    @validates('image_link')
+    def validate_artist_image_link(self, _,artist_image_link):
+        if artist_image_link is None or artist_image_link =="":
+            raise AssertionError(
+                "Enter the URL of your artist's image"
+                )
+        return artist_image_link
+    
+    @validates('facebook_link')
+    def validate_artist_facebook_link(self, _, artist_facebook_link):
+        if not (fullmatch(
+            '^(?:https:\/\/)?(?:web\.)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)$',
+            artist_facebook_link)):
+            raise AssertionError(
+                'URL must be a facebook link'
+                )
+        return artist_facebook_link
+    
+    @validates('website_link')
+    def validate_artist_website_link(self, _, artist_website_link):
+        if not (fullmatch('^(?:http:\/\/)?(?:https:\/\/)?(?:web\.)?(?:www\.)?\w+\\.\w*', artist_website_link)):
+            raise AssertionError(
+                'A valid URL must be entered'
+                )
+        return artist_website_link
+    
+    @validates('seeking_description')
+    def validate_artist_seeking_description(self, _, artist_seeking_descriptiuon):
+        if len(artist_seeking_descriptiuon) >= 250:
+            raise AssertionError(
+                'artist description should not exceed 250 characters'
+            )
+        return artist_seeking_descriptiuon
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
     def __repr__(self):
